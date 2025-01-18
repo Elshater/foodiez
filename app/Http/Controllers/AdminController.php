@@ -46,12 +46,12 @@ class AdminController extends Controller
         }
 
 
-        public function AdminForget(){
+        public function AdminForgetPassword(){
             return view('admin.forget_password');
             
         }
         public function AdminPasswordSubmit(Request $request){
-                
+
         }
 
 }
