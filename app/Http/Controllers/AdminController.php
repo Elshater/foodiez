@@ -65,7 +65,7 @@ class AdminController extends Controller
             $admin_data->token= $token;
             $admin_data->update();
 
-            $reset_lnk =url('admin/reset-password/'.$token.'/'.$request->email);
+            $reset_lnk =url('admin/reset_password/'.$token.'/'.$request->email);
             $subject = "Reset Password";
             $message="Please click on below link to reset password </br>";
             $message.="<a href='".$reset_lnk."'>Click here</a>";
@@ -74,6 +74,15 @@ class AdminController extends Controller
             
             return redirect()->back()->with('success','reset password link send on your email');
 
+        }
+
+        public function AdminResetPassword($token,$email){
+            $admin_data = Admin::where('email',$email)->where('token',$token)->first();
+            if (!$admin_data) {
+                return redirect()->route('admin.login')->with('error','Invalid Token');
+            }
+            return view('admin.reset_password',compact('token','email'));
+            
         }
 
 }
