@@ -85,5 +85,22 @@ class AdminController extends Controller
             
         }
 
+        public function AdminResetPasswordSubmit(Request $request){
+            $request->validate([
+                'email' => 'required|email',
+                'token' => 'required',
+                'password' => 'required|confirmed',
+            ]);
+            $admin_data = Admin::where('email',$request->email)->where('token',$request->token)->first();
+            if (!$admin_data) {
+                return redirect()->route('admin.login')->with('error','Invalid Token');
+            }
+            $admin_data->password = Hash::make($request->password);
+            $admin_data->token = '';
+            $admin_data->update();
+            return redirect()->route('admin.login')->with('success','Password reset successfully');
+            
+        } 
+
 }
 
